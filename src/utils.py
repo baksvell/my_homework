@@ -2,12 +2,14 @@ import json
 
 
 def load_operations():
+    """Открывает json файл в формате python"""
     with open('operations.json', 'r', encoding='utf-8') as file:
         operations_py = json.load(file)
         return operations_py
 
 
 def data_convert(data):
+    """Конвертирует представление даты в нужный формат"""
     if data:
         proper_data = ".".join(data[0:10].split("-")[::-1])
     else:
@@ -16,6 +18,7 @@ def data_convert(data):
 
 
 def transaction_convert(data):
+    """Конвертирует представление карты/счёта в нужный формат"""
     bill_number = ""
     alpha_array = []
     data_spl = data.split(" ")
@@ -30,17 +33,18 @@ def transaction_convert(data):
     else:
         len_bill = int(len(bill_number)-4)
         card_masked = f'{"".join(len_bill*"*")}{"".join(bill_number[-4:])}'
-
     transaction = f"{' '.join(alpha_array)} {card_masked}"
     return transaction
 
 
 def operation_amount(amount, currency):
+    """Конвертирует представление суммы и валюты в нужный формат"""
     final_summ = f"{amount} {currency}"
     return final_summ
 
 
 def operation_list():
+    """Сортирует платежи по датам, оставляет только послдние 5 успешных"""
     success_array = []
     for x in load_operations():
         if x.get('id') and x.get('state') != "CANCELED":
@@ -51,6 +55,7 @@ def operation_list():
 
 
 def presentation(transactions):
+    """Выводит информацию о платеже в необходимом для задания формате"""
     for x in transactions:
         if not x.get('from'):
             final_show = (f"{data_convert(x['date'])} {x['description']}\n"
@@ -60,5 +65,4 @@ def presentation(transactions):
             final_show = (f"{data_convert(x['date'])} {x['description']}\n"
                           f"{transaction_convert(x['from'])} -> {transaction_convert(x['to'])}\n"
                           f"{operation_amount(x['operationAmount']['amount'], x['operationAmount']['currency']['name'])}\n")
-
         print(final_show)
