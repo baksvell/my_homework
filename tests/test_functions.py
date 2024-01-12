@@ -12,7 +12,7 @@ def test_data_convert_empty():
 
 def test_transaction_convert():
     assert transaction_convert("MasterCard 7158300734726758") == "MasterCard 7158 30** **** 6758"
-    assert transaction_convert("Счет 35383033474447895560") == "Счет ****************5560"
+    assert transaction_convert("Счет 35383033474447895560") == "Счет **5560"
 
 
 def test_transaction_convert_empty():

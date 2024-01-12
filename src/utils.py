@@ -31,8 +31,7 @@ def transaction_convert(data):
         card_masked = (f"{''.join(bill_number[0:4])} "
                        f"{''.join(bill_number[4:6])}** **** {''.join(bill_number[12:16])}")
     else:
-        len_bill = int(len(bill_number)-4)
-        card_masked = f'{"".join(len_bill*"*")}{"".join(bill_number[-4:])}'
+        card_masked = f'{"**"}{"".join(bill_number[-4:])}'
     transaction = f"{' '.join(alpha_array)} {card_masked}"
     return transaction
 
